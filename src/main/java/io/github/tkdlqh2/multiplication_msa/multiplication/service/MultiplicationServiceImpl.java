@@ -3,6 +3,7 @@ package io.github.tkdlqh2.multiplication_msa.multiplication.service;
 import io.github.tkdlqh2.multiplication_msa.multiplication.domain.Multiplication;
 import io.github.tkdlqh2.multiplication_msa.multiplication.domain.MultiplicationResultAttempt;
 import io.github.tkdlqh2.multiplication_msa.multiplication.domain.User;
+import io.github.tkdlqh2.multiplication_msa.multiplication.domain.dto.MultiplicationResultAttemptDto;
 import io.github.tkdlqh2.multiplication_msa.multiplication.exception.MultiplicationException;
 import io.github.tkdlqh2.multiplication_msa.multiplication.repository.MultiplicationResultAttemptRepository;
 import io.github.tkdlqh2.multiplication_msa.multiplication.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static io.github.tkdlqh2.multiplication_msa.multiplication.exception.MultiplicationErrorCode.ALREADY_CHECKED;
 
@@ -64,13 +66,15 @@ public class MultiplicationServiceImpl implements MultiplicationService{
 	}
 
 	@Override
-	public List<MultiplicationResultAttempt> getStatsForUser(String userAlias) {
+	public List<MultiplicationResultAttemptDto> getStatsForUser(String userAlias) {
 		Optional<User> optionalUser = userRepository.findByAlias(userAlias);
 
 		if(optionalUser.isPresent()){
 			User user = optionalUser.get();
 			Pageable pageable = PageRequest.of(0,5, Sort.by(Sort.Order.desc("Id")));
-			return attemptRepository.findAllByUser(user,pageable);
+			return attemptRepository.findAllByUser(user,pageable).getContent().stream()
+					.map(MultiplicationResultAttemptDto::new)
+					.collect(Collectors.toList());
 		}
 
 		return Collections.emptyList();

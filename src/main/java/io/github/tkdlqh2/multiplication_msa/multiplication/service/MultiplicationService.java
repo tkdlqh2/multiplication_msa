@@ -2,6 +2,7 @@ package io.github.tkdlqh2.multiplication_msa.multiplication.service;
 
 import io.github.tkdlqh2.multiplication_msa.multiplication.domain.Multiplication;
 import io.github.tkdlqh2.multiplication_msa.multiplication.domain.MultiplicationResultAttempt;
+import io.github.tkdlqh2.multiplication_msa.multiplication.domain.dto.MultiplicationResultAttemptDto;
 
 import java.util.List;
 
@@ -26,5 +27,5 @@ public interface MultiplicationService {
 	 * @param userAlias 는 해당 사용자의 닉네임
 	 * @return 해당 사용자가 전에 제출한 답안 객체 {@link MultiplicationResultAttempt}의 리스트
 	 */
-	List<MultiplicationResultAttempt> getStatsForUser(final String userAlias);
+	List<MultiplicationResultAttemptDto> getStatsForUser(final String userAlias);
 }
