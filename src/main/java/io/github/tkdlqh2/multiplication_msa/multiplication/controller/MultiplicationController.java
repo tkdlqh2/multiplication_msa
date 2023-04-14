@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/multiplication")
+@RequestMapping("/multiplications")
 @RequiredArgsConstructor
 public class MultiplicationController {
 
