@@ -1,9 +1,6 @@
 package io.github.tkdlqh2.multiplication_msa.multiplication.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,10 +10,10 @@ import javax.persistence.Id;
 /**
  * 사용자 정보를 저장하는 클래스
  */
+@AllArgsConstructor
 @RequiredArgsConstructor
 @Getter
 @ToString
-@EqualsAndHashCode
 @Entity
 public final class User {
 
