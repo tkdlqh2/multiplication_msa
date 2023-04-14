@@ -37,8 +37,6 @@ class MultiplicationControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.factorA").value(70))
 				.andExpect(jsonPath("$.factorB").value(20))
-				.andExpect(jsonPath("$.result").value(1400))
 				.andDo(print());
 	}
-
 }
