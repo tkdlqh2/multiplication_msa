@@ -1,14 +1,12 @@
 package io.github.tkdlqh2.multiplication_msa.multiplication.domain.dto;
 
-import io.github.tkdlqh2.multiplication_msa.multiplication.domain.Multiplication;
 import io.github.tkdlqh2.multiplication_msa.multiplication.domain.MultiplicationResultAttempt;
-import io.github.tkdlqh2.multiplication_msa.multiplication.domain.User;
 
-public record MultiplicationResultAttemptDto(Long id, User user, Multiplication multiplication,
+public record MultiplicationResultAttemptDto(Long userId, Long multiplicationId,
 											 int resultAttempt, boolean correct) {
 
 	public MultiplicationResultAttemptDto(MultiplicationResultAttempt attempt){
-		this(attempt.getId(), attempt.getUser(),attempt.getMultiplication()
+		this(attempt.getUser().getId(),attempt.getMultiplication().getId()
 		,attempt.getResultAttempt(),attempt.isCorrect()) ;
 	}
 }
