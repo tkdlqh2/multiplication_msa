@@ -1,5 +1,6 @@
 package io.github.tkdlqh2.multiplication_msa.multiplication.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 @Getter
 @ToString
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Multiplication {
 
 	@Id

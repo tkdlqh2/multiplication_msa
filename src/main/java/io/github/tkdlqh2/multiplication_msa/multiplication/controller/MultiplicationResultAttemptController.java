@@ -1,6 +1,7 @@
 package io.github.tkdlqh2.multiplication_msa.multiplication.controller;
 
-import io.github.tkdlqh2.multiplication_msa.multiplication.domain.MultiplicationResultAttempt;
+import io.github.tkdlqh2.multiplication_msa.multiplication.domain.dto.MultiplicationResultAttemptDto;
+import io.github.tkdlqh2.multiplication_msa.multiplication.domain.dto.MultiplicationResultAttemptInput;
 import io.github.tkdlqh2.multiplication_msa.multiplication.service.MultiplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,19 +20,12 @@ public class MultiplicationResultAttemptController {
 	private final MultiplicationService multiplicationService;
 
 	@PostMapping
-	ResponseEntity<MultiplicationResultAttempt> postResult(@RequestBody MultiplicationResultAttempt multiplicationResultAttempt) {
-		boolean isCorrect = multiplicationService.checkAttempt(multiplicationResultAttempt);
-		MultiplicationResultAttempt attemptCopy = new MultiplicationResultAttempt(
-				multiplicationResultAttempt.getUser(),
-				multiplicationResultAttempt.getMultiplication(),
-				multiplicationResultAttempt.getResultAttempt(),
-				isCorrect
-		);
-		return ResponseEntity.ok(attemptCopy);
+	ResponseEntity<MultiplicationResultAttemptDto> postResult(@RequestBody MultiplicationResultAttemptInput multiplicationResultAttempt) {
+		return ResponseEntity.ok(multiplicationService.checkAttempt(multiplicationResultAttempt));
 	}
 
 	@GetMapping
-	ResponseEntity<List<MultiplicationResultAttempt>> getStatistics(@RequestParam("alias") String alias) {
+	ResponseEntity<List<MultiplicationResultAttemptDto>> getStatistics(@RequestParam("alias") String alias) {
 		return ResponseEntity.ok(
 				multiplicationService.getStatsForUser(alias)
 		);
