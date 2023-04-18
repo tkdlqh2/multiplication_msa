@@ -2,6 +2,7 @@ package io.github.tkdlqh2.multiplication_msa.multiplication.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.tkdlqh2.multiplication_msa.multiplication.domain.MultiplicationResultAttempt;
+import io.github.tkdlqh2.multiplication_msa.multiplication.domain.dto.MultiplicationResultAttemptDto;
 import io.github.tkdlqh2.multiplication_msa.multiplication.service.MultiplicationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -33,8 +37,8 @@ class MultiplicationResultAttemptControllerTest {
 	void genericParameterizedSuccessTest() throws Exception {
 		// given
 		given(multiplicationService.checkAttempt(any()))
-				.willReturn(true);
-		MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(null,null,3500);
+				.willReturn(new MultiplicationResultAttemptDto(null,0,true));
+		MultiplicationResultAttempt attempt = new MultiplicationResultAttempt();
 
 		// when
 		// then
@@ -52,8 +56,8 @@ class MultiplicationResultAttemptControllerTest {
 	void genericParameterizedFailTest() throws Exception {
 		// given
 		given(multiplicationService.checkAttempt(any()))
-				.willReturn(false);
-		MultiplicationResultAttempt attempt = new MultiplicationResultAttempt(null,null,3500);
+				.willReturn(new MultiplicationResultAttemptDto(null,0,false));
+		MultiplicationResultAttempt attempt = new MultiplicationResultAttempt();
 
 		// when
 		// then
@@ -64,6 +68,28 @@ class MultiplicationResultAttemptControllerTest {
 						)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.correct").value(false))
+				.andDo(print());
+	}
+
+	@Test
+	void getStatistics() throws Exception {
+		//given
+		String userAlias = "user1";
+		given(multiplicationService.getStatsForUser(userAlias)).willReturn(
+				List.of(new MultiplicationResultAttemptDto(null,1000,true),
+						new MultiplicationResultAttemptDto(null,1000,false)));
+
+		//when
+		//then
+		mvc.perform(get("/results?alias="+ userAlias)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[1]").exists())
+				.andExpect(jsonPath("$[2]").doesNotExist())
+				.andExpect(jsonPath("$[0].resultAttempt").value(1000))
+				.andExpect(jsonPath("$[0].correct").value(true))
+				.andExpect(jsonPath("$[1].resultAttempt").value(1000))
+				.andExpect(jsonPath("$[1].correct").value(false))
 				.andDo(print());
 	}
 }

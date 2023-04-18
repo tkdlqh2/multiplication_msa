@@ -1,33 +1,35 @@
 package io.github.tkdlqh2.multiplication_msa.multiplication.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * 애플리케이션에서 곱셈을 나타내는 클래스
  */
 @Getter
+@ToString
+@Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Multiplication {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "MULTIPLICATION_ID")
+	private Long id;
+
 	// 인수
-	private final int factorA;
-	private final int factorB;
+	private int factorA;
+	private int factorB;
 
-	// A * B 의 결과
-	private final int result;
+	public Multiplication() {
+		this.factorA = 0;
+		this.factorB = 0;
+	}
 
-	public Multiplication(int factorA, int factorB) {
+	public Multiplication(int factorA,int factorB){
 		this.factorA = factorA;
 		this.factorB = factorB;
-		this.result = factorA * factorB;
 	}
-
-	@Override
-	public String toString() {
-		return "Multiplication{" +
-				"인수A=" + factorA +
-				", 인수B=" + factorB +
-				", 결과(A*B)=" + result +
-				'}';
-	}
-
 }

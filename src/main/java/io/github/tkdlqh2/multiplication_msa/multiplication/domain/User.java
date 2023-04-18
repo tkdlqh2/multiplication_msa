@@ -1,23 +1,29 @@
 package io.github.tkdlqh2.multiplication_msa.multiplication.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
+
 
 /**
  * 사용자 정보를 저장하는 클래스
  */
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @ToString
-@EqualsAndHashCode
-public final class User {
+@Entity
+@Table(name = "MEMBERS")
+public class User {
 
-	private final String alias;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "USER_ID")
+	private Long id;
 
-	// JSON (역)직렬화를 위한 빈 생성자
-	protected User() {
-		alias = null;
+	@Column(unique = true)
+	private String alias;
+
+	public User(String alias){
+		this.alias = alias;
 	}
 }
