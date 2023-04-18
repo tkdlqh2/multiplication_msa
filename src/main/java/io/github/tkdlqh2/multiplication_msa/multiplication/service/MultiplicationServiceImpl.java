@@ -40,8 +40,8 @@ public class MultiplicationServiceImpl implements MultiplicationService{
 	@Override
 	public MultiplicationResultAttemptDto checkAttempt(final MultiplicationResultAttemptInput attempt) {
 		// 해당 닉네임의 사용자가 존재하는지 확인
-		User user = userRepository.findByAlias(attempt.alias())
-				.orElse(userRepository.save(new User(attempt.alias())));
+		Optional<User> optionalUser = userRepository.findByAlias(attempt.alias());
+		User user = optionalUser.isPresent() ? optionalUser.get() : userRepository.save(new User(attempt.alias()));
 
 		// 답안을 채점
 		boolean isCorrect = attempt.resultAttempt() ==
