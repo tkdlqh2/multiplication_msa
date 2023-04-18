@@ -5,6 +5,7 @@ import io.github.tkdlqh2.multiplication_msa.multiplication.domain.Multiplication
 import io.github.tkdlqh2.multiplication_msa.multiplication.domain.User;
 import io.github.tkdlqh2.multiplication_msa.multiplication.domain.dto.MultiplicationResultAttemptDto;
 import io.github.tkdlqh2.multiplication_msa.multiplication.domain.dto.MultiplicationResultAttemptInput;
+import io.github.tkdlqh2.multiplication_msa.multiplication.repository.MultiplicationRepository;
 import io.github.tkdlqh2.multiplication_msa.multiplication.repository.MultiplicationResultAttemptRepository;
 import io.github.tkdlqh2.multiplication_msa.multiplication.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class MultiplicationServiceImpl implements MultiplicationService{
 
 	private final RandomGeneratorService randomGeneratorService;
 	private final MultiplicationResultAttemptRepository attemptRepository;
+	private final MultiplicationRepository multiplicationRepository;
 	private final UserRepository userRepository;
 
 	@Override
@@ -38,22 +40,22 @@ public class MultiplicationServiceImpl implements MultiplicationService{
 	@Override
 	public MultiplicationResultAttemptDto checkAttempt(final MultiplicationResultAttemptInput attempt) {
 		// 해당 닉네임의 사용자가 존재하는지 확인
-		Optional<User> user = userRepository.findByAlias(attempt.alias());
+		User user = userRepository.findByAlias(attempt.alias())
+				.orElse(userRepository.save(new User(attempt.alias())));
 
 		// 답안을 채점
 		boolean isCorrect = attempt.resultAttempt() ==
 				attempt.multiplication().getFactorA() *
 						attempt.multiplication().getFactorB();
 
-		MultiplicationResultAttempt checkedAttempt = new MultiplicationResultAttempt(
-				user.orElse(new User(attempt.alias())),
-				attempt.multiplication(),
-				attempt.resultAttempt(),
-				isCorrect
-		);
+		Multiplication multiplication = multiplicationRepository.save(attempt.multiplication());
+
+		MultiplicationResultAttempt checkedAttempt =
+				attemptRepository.save(new MultiplicationResultAttempt(user, multiplication,
+																	attempt.resultAttempt(), isCorrect));
 
 		// 답안을 저장
-		return new MultiplicationResultAttemptDto(attemptRepository.save(checkedAttempt));
+		return new MultiplicationResultAttemptDto(checkedAttempt);
 	}
 
 	@Override

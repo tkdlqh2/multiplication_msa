@@ -1,30 +1,29 @@
 package io.github.tkdlqh2.multiplication_msa.multiplication.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 /**
  * 사용자 정보를 저장하는 클래스
  */
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Getter
 @ToString
 @Entity
-public final class User {
+@Table(name = "MEMBERS")
+public class User {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USER_ID")
 	private Long id;
-	private final String alias;
 
-	// JSON (역)직렬화를 위한 빈 생성자
-	protected User() {
-		alias = null;
+	@Column(unique = true)
+	private String alias;
+
+	public User(String alias){
+		this.alias = alias;
 	}
 }

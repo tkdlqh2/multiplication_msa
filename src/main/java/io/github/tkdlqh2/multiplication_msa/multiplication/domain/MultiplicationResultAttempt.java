@@ -1,38 +1,37 @@
 package io.github.tkdlqh2.multiplication_msa.multiplication.domain;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
-@RequiredArgsConstructor
+
+@NoArgsConstructor
 @Getter
 @ToString
 @Entity
-public final class MultiplicationResultAttempt {
+public class MultiplicationResultAttempt {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "USER_ID")
-	private final User user;
+	private User user;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "MULTIPLICATION_ID")
-	private final Multiplication multiplication;
-	private final int resultAttempt;
-	private final boolean correct;
+	private Multiplication multiplication;
+	private int resultAttempt;
+	private boolean correct;
 
-	// JSON (역)직렬화를 위한 빈 생성자
-	public MultiplicationResultAttempt() {
-		user = null;
-		multiplication = null;
-		resultAttempt = -1;
-		correct = false;
+	public MultiplicationResultAttempt(User user,Multiplication multiplication, int resultAttempt, boolean correct) {
+		this.user = user;
+		this.multiplication = multiplication;
+		this.resultAttempt = resultAttempt;
+		this.correct = correct;
 	}
-
 }
 
