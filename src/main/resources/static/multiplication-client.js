@@ -28,7 +28,7 @@ $(document).ready(function () {
       userAlias = $form.find("input[name='user-alias']").val();
 
     // API 에 맞게 데이터를 조합하기
-    var data = {alias: userAlias, multiplication: {factorA: a, factorB: b}, resultAttempt: attempt};
+    var data = {user: {alias: userAlias}, multiplication: {factorA: a, factorB: b}, resultAttempt: attempt};
 
     // POST를 이용해서 데이터 보내기
     $.ajax({

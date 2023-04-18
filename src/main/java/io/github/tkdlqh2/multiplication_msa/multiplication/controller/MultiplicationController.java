@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * 곱셈 애플리케이션의 REST API 를 구현한 클래스
- */
 @RestController
 @RequestMapping("/multiplications")
 @RequiredArgsConstructor
