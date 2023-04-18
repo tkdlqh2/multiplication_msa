@@ -5,6 +5,7 @@ import io.github.tkdlqh2.multiplication_msa.multiplication.domain.Multiplication
 import io.github.tkdlqh2.multiplication_msa.multiplication.domain.User;
 import io.github.tkdlqh2.multiplication_msa.multiplication.domain.dto.MultiplicationResultAttemptDto;
 import io.github.tkdlqh2.multiplication_msa.multiplication.domain.dto.MultiplicationResultAttemptInput;
+import io.github.tkdlqh2.multiplication_msa.multiplication.repository.MultiplicationRepository;
 import io.github.tkdlqh2.multiplication_msa.multiplication.repository.MultiplicationResultAttemptRepository;
 import io.github.tkdlqh2.multiplication_msa.multiplication.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,8 @@ class MultiplicationServiceImplTest {
 	private MultiplicationResultAttemptRepository attemptRepository;
 	@Mock
 	private UserRepository userRepository;
+	@Mock
+	private MultiplicationRepository multiplicationRepository;
 	@InjectMocks
 	private MultiplicationServiceImpl multiplicationServiceImpl;
 
@@ -58,6 +61,8 @@ class MultiplicationServiceImplTest {
 		MultiplicationResultAttemptInput attempt = new MultiplicationResultAttemptInput(USER_ALIAS, multiplication, 3000);
 		given(userRepository.findByAlias(USER_ALIAS))
 				.willReturn(Optional.of(new User(1L,USER_ALIAS)));
+		given(multiplicationRepository.save(any())).willReturn(multiplication);
+
 		when(attemptRepository.save(any())).thenAnswer(i->i.getArgument(0));
 
 		// when

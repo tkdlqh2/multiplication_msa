@@ -37,7 +37,7 @@ class MultiplicationResultAttemptControllerTest {
 	void genericParameterizedSuccessTest() throws Exception {
 		// given
 		given(multiplicationService.checkAttempt(any()))
-				.willReturn(new MultiplicationResultAttemptDto(null,null,0,true));
+				.willReturn(new MultiplicationResultAttemptDto(null,0,true));
 		MultiplicationResultAttempt attempt = new MultiplicationResultAttempt();
 
 		// when
@@ -56,7 +56,7 @@ class MultiplicationResultAttemptControllerTest {
 	void genericParameterizedFailTest() throws Exception {
 		// given
 		given(multiplicationService.checkAttempt(any()))
-				.willReturn(new MultiplicationResultAttemptDto(null,null,0,false));
+				.willReturn(new MultiplicationResultAttemptDto(null,0,false));
 		MultiplicationResultAttempt attempt = new MultiplicationResultAttempt();
 
 		// when
@@ -76,8 +76,8 @@ class MultiplicationResultAttemptControllerTest {
 		//given
 		String userAlias = "user1";
 		given(multiplicationService.getStatsForUser(userAlias)).willReturn(
-				List.of(new MultiplicationResultAttemptDto(null,null,1000,true),
-						new MultiplicationResultAttemptDto(null,null,1000,false)));
+				List.of(new MultiplicationResultAttemptDto(null,1000,true),
+						new MultiplicationResultAttemptDto(null,1000,false)));
 
 		//when
 		//then
